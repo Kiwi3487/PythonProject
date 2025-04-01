@@ -3,7 +3,6 @@ class StandardTrie:
         self.children = {}
         self.is_end_of_word = False
 
-
 class Trie:
     def __init__(self):
         self.root = StandardTrie()
@@ -25,14 +24,14 @@ class Trie:
             if char not in node.children:
                 return []
             node = node.children[char]
-        return self._findWords(node, prefix)
+        return self.findwords(node, prefix)
 
     def findwords(self, node, prefix):
         words = []
         if node.is_end_of_word:
             words.append(prefix)
         for char, next_node in node.children.items():
-            words.extend(self._findWords(next_node, prefix + char))
+            words.extend(self.findwords(next_node, prefix + char))
         return words
 
     def displaylist(self):

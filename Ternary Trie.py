@@ -10,6 +10,8 @@ class Trie:
         self.word_list = []
 
     def add(self, word):
+        if self.root is None:
+            self.root = TernaryTrie(word[0])
         self.root = self.checkadd(self.root, word, 0)
         if word not in self.word_list:
             self.word_list.append(word)
@@ -31,7 +33,7 @@ class Trie:
     def search(self, prefix):
         node = self.checksearch(self.root, prefix, 0)
         if node:
-            return self.findwords(node, prefix[:-1])
+            return self.findwords(node.middle, prefix)
         return []
 
     def checksearch(self, node, prefix, index):
@@ -52,14 +54,13 @@ class Trie:
             return words
         if node.is_end_of_word:
             words.append(prefix + node.char)
-        words.extend(self.findwords(node.left, prefix))
-        if node.middle:
-            words.extend(self.findwords(node.middle, prefix + node.char))
-        words.extend(self.findwords(node.right, prefix))
-        return words
+        words.extend(self.findwords(node.middle, prefix + node.char))
+        if node.left:
+            words.extend(self.findwords(node.left, prefix))
+        if node.right:
+            words.extend(self.findwords(node.right, prefix))
 
-    def displaylist(self):
-        return self.word_list
+        return words
 
 trie = Trie()
 while True:
